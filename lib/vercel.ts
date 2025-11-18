@@ -1,16 +1,17 @@
 // lib/vercel.ts
 import fetch from 'node-fetch';
 
-const VERCEL_TOKEN = process.env.VERCEL_TOKEN;
-const PROJECT_ID = process.env.VERCEL_PROJECT_ID;
+const VERCEL_TOKEN_SASS = process.env.VERCEL_TOKEN_SASS;
+const VERCEL_PROJECT_ID_SASS =
+  process.env.VERCEL_PROJECT_ID_SASS;
 
 export async function addDomainToVercel(domain: string) {
   const res = await fetch(
-    `https://api.vercel.com/v9/projects/${PROJECT_ID}/domains`,
+    `https://api.vercel.com/v9/projects/${VERCEL_PROJECT_ID_SASS}/domains`,
     {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${VERCEL_TOKEN}`,
+        Authorization: `Bearer ${VERCEL_TOKEN_SASS}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ name: domain }),
@@ -23,9 +24,11 @@ export async function addDomainToVercel(domain: string) {
 
 export async function getDomainFromVercel(domain: string) {
   const res = await fetch(
-    `https://api.vercel.com/v9/projects/${PROJECT_ID}/domains/${domain}`,
+    `https://api.vercel.com/v9/projects/${VERCEL_PROJECT_ID_SASS}/domains/${domain}`,
     {
-      headers: { Authorization: `Bearer ${VERCEL_TOKEN}` },
+      headers: {
+        Authorization: `Bearer ${VERCEL_TOKEN_SASS}`,
+      },
     }
   );
   return res.json();
