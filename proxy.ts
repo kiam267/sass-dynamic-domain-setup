@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getTenantByHost } from '@/lib/tenant';
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const host = req.headers.get('host')?.split(':')[0] || '';
 
   const MAIN = process.env.MAIN_DOMAIN!; // example: shariarkobirkiam.xyz
