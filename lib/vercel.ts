@@ -1,9 +1,8 @@
 // lib/vercel.ts
 import fetch from 'node-fetch';
 
-const VERCEL_TOKEN_SASS = process.env.VERCEL_TOKEN_SASS;
-const VERCEL_PROJECT_ID_SASS =
-  process.env.VERCEL_PROJECT_ID_SASS;
+const VERCEL_TOKEN_SASS = process.env.TOKEN_SASS;
+const VERCEL_PROJECT_ID_SASS = process.env.PROJECT_ID_SASS;
 
 export async function addDomainToVercel(domain: string) {
   const res = await fetch(
