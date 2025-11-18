@@ -1,50 +1,38 @@
-// drizzle/schema.ts
+// lib/schema.ts
 import {
   pgTable,
   serial,
-  text,
   varchar,
   timestamp,
-  uniqueIndex,
+  boolean,
 } from 'drizzle-orm/pg-core';
 
-export const users = pgTable(
-  'users',
-  {
-    id: serial('id').primaryKey(),
-    name: varchar('name', { length: 255 }).notNull(),
-    email: varchar('email', { length: 255 }).notNull(),
-    password_hash: text('password_hash').notNull(),
-    created_at: timestamp('created_at').defaultNow(),
-  },
-  table => ({
-    email_idx: uniqueIndex('users_email_idx').on(
-      table.email
-    ),
-  })
-);
+export const users = pgTable('users', {
+  id: serial('id').primaryKey(),
+  email: varchar('email', { length: 255 })
+    .notNull()
+    .unique(),
+  passwordHash: varchar('password_hash', {
+    length: 1024,
+  }).notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
 
-export const projects = pgTable(
-  'projects',
-  {
-    id: serial('id').primaryKey(),
-    owner_id: serial('owner_id').notNull(),
-    name: varchar('name', { length: 255 }).notNull(),
-    slug: varchar('slug', { length: 255 }).notNull(),
-    primary_domain: varchar('primary_domain', {
-      length: 255,
-    }),
-    created_at: timestamp('created_at').defaultNow(),
-  },
-  t => ({
-    slug_idx: uniqueIndex('projects_slug_idx').on(t.slug),
-  })
-);
+export const tenants = pgTable('tenants', {
+  id: serial('id').primaryKey(),
+  userId: serial('user_id').notNull(), // FK not enforced here but store relation
+  name: varchar('name', { length: 200 }).notNull(),
+  slug: varchar('slug', { length: 100 }).notNull().unique(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+});
 
 export const domains = pgTable('domains', {
   id: serial('id').primaryKey(),
-  project_id: serial('project_id').notNull(),
-  domain: varchar('domain', { length: 255 }).notNull(),
-  verified: text('verified').default('false'),
-  created_at: timestamp('created_at').defaultNow(),
+  tenantId: serial('tenant_id').notNull(),
+  domain: varchar('domain', { length: 255 })
+    .notNull()
+    .unique(),
+  isPrimary: boolean('is_primary').default(false).notNull(),
+  verified: boolean('verified').default(false).notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
 });

@@ -6,10 +6,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:generate": "npx drizzle-kit generate",
+    "db:migrate": "npx drizzle-kit migrate",
+    "db:studio": "pnpm drizzle-kit studio"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
+    "bcryptjs": "^3.0.3",
+    "crypto": "^1.0.1",
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.44.7",
     "next": "16.0.3",

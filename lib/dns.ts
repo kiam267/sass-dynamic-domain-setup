@@ -1,15 +1,15 @@
-// lib/dns.ts
 import dns from 'dns/promises';
 
-export async function checkCNAME(
+export async function verifyDomain(
   domain: string,
-  expectedTarget: string
+  expectedToken: string
 ) {
   try {
-    const records = await dns.resolveCname(domain);
-    return records.includes(expectedTarget);
-  } catch (err: any) {
-    // No CNAME record or other error
+    const records = await dns.resolveTxt(domain);
+    const flat = records.map(r => r.join(''));
+
+    return flat.includes(expectedToken);
+  } catch (e) {
     return false;
   }
 }
